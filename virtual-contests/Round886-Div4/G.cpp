@@ -28,8 +28,8 @@ int main(){
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   TC {
-    unordered_map<ll, ll> horizontal, vertical, diff;
-    ll x, y, cdiff;
+    unordered_map<ll, ll> horizontal, vertical, diff1, diff2;
+    ll x, y, a, b;
     ll pairs;
     cin >> pairs;
     ll res = 0;
@@ -46,12 +46,17 @@ int main(){
 	vertical[y] += 1;
       } else vertical[y] = 1;
 
-      cdiff = abs(x - y);
-      if (diff.find(cdiff) != diff.end()){
-	res += diff[cdiff] * 2;
-	diff[cdiff] += 1;
-      } else diff[cdiff] = 1;
-      cout << "curr res " << res << endl;
+      a = x - y;
+      if (diff1.find(a) != diff1.end()){
+	res += diff1[a] * 2;
+	diff1[a]++;
+      } else diff1[a] = 1;
+
+      b = y - x;
+      if (diff2.find(b) != diff2.end()){
+	res += diff2[b] * 2;
+	diff2[b]++;
+      } else diff2[b] = 1;
     }
     cout << res << endl;
   }

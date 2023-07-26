@@ -26,11 +26,14 @@ ll check(vl paintings, ll goal, ll possible){
   if (possible > LLONG_MAX / 2) return 1;
   ll bonus = 2 * possible;
   ll sum = 0;
+  ll add;
+  // Adding values, multiplying values, summing
   for (long long size: paintings){
     if (size > LLONG_MAX - bonus) return 1;
-    if ((size + bonus) > LLONG_MAX / (size + bonus)) return 1;
-    if (sum > (LLONG_MAX / ((size + bonus) * (size + bonus)))) return 1;
-    sum += ((size + bonus) * (size + bonus));
+    if ((size + bonus) > LLONG_MAX / (size + bonus))return 1;
+    add = (size + bonus) * (size + bonus);
+    if (sum > (LLONG_MAX - add)) return 1;
+    sum += add;
   }
   if (sum == goal) return 0;
   if (sum > goal) return 1;

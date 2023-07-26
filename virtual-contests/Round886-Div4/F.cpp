@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <cstring>
 #include <ios>
 using namespace std;
  
@@ -26,6 +27,22 @@ int main(){
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   TC {
+    ll n;
+    ll val, og;
+    cin >> n;
+    ll spots[n + 1];
+    ll res = 0;
+    memset(spots, 0, sizeof(spots));
+    for (ll curr = 0; curr < n; curr++){
+      cin >> og;
+      val = og;
+      while (val <= n){
+	spots[val]++;
+	res = max(res, spots[val]);
+	val += og;
+      }
+    }
+    o(res);
   }
 }
 
