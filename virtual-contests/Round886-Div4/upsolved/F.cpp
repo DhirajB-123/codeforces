@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 #include <cstring>
 #include <ios>
+#include <unordered_map>
 using namespace std;
  
 typedef long long int ll;
@@ -27,21 +28,39 @@ int main(){
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   TC {
-    ll n;
-    ll val, og;
+    // number of cases, value, result
+    ll n, val, res = 0;
     cin >> n;
+
+    // the slots to place a trap (all zeroed out)
     ll spots[n + 1];
-    ll res = 0;
     memset(spots, 0, sizeof(spots));
+
+    // map of value to count of occurences
+    map<ll, ll> occur;
+
+    // reading in values and incrementing occurences
     for (ll curr = 0; curr < n; curr++){
-      cin >> og;
-      val = og;
+      cin >> val;
+      occur[val]++; 
+    }
+
+    // for each value in the map, we increment the slots
+    for (ll curr = 1; curr <=n; curr++){
+      // if this value is not in the map we skip
+      if (occur[curr] == 0) {
+	continue;
+      }
+
+      //we simulate the jumps, incrementing the slot by the amt of frogs
+      val = curr;
       while (val <= n){
-	spots[val]++;
+	spots[val] += occur[curr];	
 	res = max(res, spots[val]);
-	val += og;
+	val += curr;
       }
     }
+
     o(res);
   }
 }
