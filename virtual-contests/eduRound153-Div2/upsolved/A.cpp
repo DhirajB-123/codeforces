@@ -11,7 +11,7 @@ typedef long long int ll;
 typedef long double ld;
 typedef vector<ll> vl;
 typedef pair<ll, ll> pl;
-typedef vector<pair<ll, ll>> vll;
+typedef vector<pair<ll, ll> > vll;
 #define pb push_back
 #define all(x) (x).begin(), (x).end()
 #define f(i,l,r) for (ll i = l; i < r; ++i)
@@ -31,24 +31,25 @@ int main(){
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   TC {
-    string res, substring;
-    cin >> substring;
-    if (substring == "()"){ o("NO");}
-    if (substring == ")("){
-	for (auto _: substring){
-	  res.push_back('(');
-	}
-	for (auto _: substring){
-	  res.push_back(')');
-	}
-      o("YES\n"+res);
+    string possible, alternative, substring;
+    cin >> substring; 
+    for (int i = 0; i < substring.size(); i++){
+      possible.push_back('(');
+      possible.push_back(')');
+      alternative.push_back('(');
+    }
+    /* cout << "possible" << possible << endl; */
+    for (int i = 0; i < substring.size(); i++){
+      alternative.push_back(')');
+    }
+    /* cout << "alternative " << alternative << endl; */
+    if (possible.find(substring) == string::npos){
+      o("YES\n" + possible);
+    } else if (alternative.find(substring) == string::npos) {
+      o("YES\n" + alternative);
     }
     else { 
-      for (auto _: substring){
-	res.push_back('(');
-	res.push_back(')');
-      }
-      o("YES\n"+res);
+      o("NO");
     }
   }
 }

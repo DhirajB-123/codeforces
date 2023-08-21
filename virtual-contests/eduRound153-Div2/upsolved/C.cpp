@@ -1,10 +1,7 @@
 #include <algorithm>
 #include <bits/stdc++.h>
-#include <cstring>
-#include <ios>
-#include <unordered_map>
 using namespace std;
- 
+
 typedef long long int ll;
 typedef long double ld;
 typedef vector<ll> vl;
@@ -29,23 +26,20 @@ int main(){
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   TC {
-    ll target, k, coin_one, coin_multiple;
-    cin >> target >> k >> coin_one >> coin_multiple;
-    
-    ll desired_k = target / k;
-    ll desired_one = target % k;
-    ll converted_k_coins = coin_one / k;
-    coin_one -= converted_k_coins * k;
-
-    cout << "desired k " << desired_k << endl;
-    cout << "desired one " << desired_one << endl;
-    cout << "ones " << coin_one << endl;
-    cout << "ks " << coin_multiple + converted_k_coins << endl;
-
-    ll zero = 0;
-
-    ll res = max(zero, desired_k - (coin_multiple + converted_k_coins));
-    res += max(zero, desired_one - coin_one);
-    o(res);
+    ll size, lower = 0, upper;
+    ll value;
+    cin >> size;
+    cin >> lower;
+    upper = size+1;
+    ll res = 0;
+    for (int i = 1; i < size; i++){
+      cin >> value;
+      if (value < upper and value > lower){
+	res += 1;
+	upper = value;
+      }
+      else{ lower = min(lower, value);}
+    }
+    o(res); 
   }
 }
