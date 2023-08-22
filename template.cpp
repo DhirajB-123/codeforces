@@ -8,7 +8,7 @@ typedef long long int ll;
 typedef long double ld;
 typedef vector<ll> vl;
 typedef pair<ll, ll> pl;
-typedef vector<pair<ll, ll>> vll;
+typedef vector<pair<ll, ll> > vll;
 #define pb push_back
 #define all(x) (x).begin(), (x).end()
 #define f(i,l,r) for (ll i = l; i < r; ++i)
