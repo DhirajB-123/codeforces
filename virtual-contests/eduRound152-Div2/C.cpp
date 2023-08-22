@@ -2,7 +2,9 @@
 #include <bits/stdc++.h>
 #include <cstring>
 #include <ios>
+#include <iostream>
 #include <unordered_map>
+#include <utility>
 using namespace std;
  
 typedef long long int ll;
@@ -25,75 +27,62 @@ typedef vector<pair<ll, ll> > vll;
 #define o(x) {cout<<x<<'\n'; goto _restart;}
 #define ov(a) {pv(a) goto _restart;}
 
-string operate(ll left, ll right, string original, ll prefix[]){
-  string res = original;
-  sort(res.begin() + left, res.begin() + right);
-  return res;
-}
-
-/* string operate(ll left, ll right, string original, ll prefix[]){ */
-/*   string res = ""; */
-/*   for (int i = 0; i < left; i++) { */
-/*     res.push_back(original[i]); */ 
-/*   } */
-/*   ll val_left, val_right, ones, zeroes; */
-/*   if (left == 0){ */
-/*     val_left = 0; */
-/*   } else { */
-/*     val_left = prefix[left]; */
-/*   } */
-/*   val_right = prefix[right]; */
-/*   ones = val_right - val_left; */
-/*   zeroes = (right - left + 1) - ones; */
-/*   /1* cout << ones << " ones\n"; *1/ */
-/*   /1* cout << zeroes << " zeroes\n"; *1/ */
-/*   while (zeroes > 0){ */
-/*     res.push_back('0'); */
-/*     zeroes--; */
-/*   } */
-/*   while (ones > 0){ */
-/*     res.push_back('1'); */
-/*     ones--; */
-/*   } */
-/*   for (int i = right + 1; i < original.size(); i++){ */
-/*     res.push_back(original[i]); */
-/*   } */
-/*   return res; */
-/* } */
-
 int main(){
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   TC {
-    ll string_size, operations, left, right;
-    cin >> string_size >> operations;
-
+    ll size, queries, left, right;
     string original;
-    string current_operation;
+    set<pl> distinct;
+    cin >> size >> queries;
     cin >> original;
-    set<string> strings;
+  
 
-    /* cout << "original " << original << endl; */
+    ll left_dp[size], right_dp[size];
 
-    ll prefix[original.size()];
-    ll total = 0;
-    char c;
-    for (int i = 0; i < original.size(); i++){
-      c = original[i]; 
-      if (c == '1'){total++;}
-      prefix[i] = total;
+    // generating left dp
+    left_dp[0] = 0;
+    for (ll i = 1; i < size; i++){
+      if (original[i-1] == '0'){
+	left_dp[i] = left_dp[i-1];
+      }
+      else { left_dp[i] = i; }
+    }
+      
+    // generating right dp
+    right_dp[size-1] = size-1;
+    for (ll i = size - 2; i >= 0; i--){
+      if (original[i+1] == '1'){
+	right_dp[i] = right_dp[i+1];
+      }
+      else { right_dp[i] = i; }
     }
 
-    while (operations > 0) {
+    // print dps
+    for (int i = 0; i < size; i++){
+      cerr << left_dp[i] << " ";
+    }
+    cerr << endl;
+    for (int i = 0; i < size; i++){
+      cerr << right_dp[i] << " ";
+    }
+    cerr << endl;
+
+    ll pair_l, pair_r;
+    while (queries > 0){
       cin >> left >> right;
+      queries--;
       left--;
-      /* right--; */
-      current_operation = operate(left, right, original, prefix);
-      /* cout << current_operation << endl; */
-      strings.insert(current_operation);
-      operations--;
+      right--;
+      pair_l = left_dp[left];
+      pair_r = right_dp[right];
+      if (pair_l > pair_r){
+	distinct.insert(make_pair(-1,-1));
+      } else {
+	distinct.insert(make_pair(pair_l, pair_r));
+      }
     }
 
-    o(strings.size());
+    o(distinct.size());
   }
 }
