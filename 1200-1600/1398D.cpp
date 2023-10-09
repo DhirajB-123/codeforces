@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <bits/stdc++.h>
 #include <cstring>
 #include <ios>
@@ -24,9 +25,73 @@ typedef vector<pair<ll, ll> > vll;
 #define o(x) {cout<<x<<'\n'; goto _restart;}
 #define ov(a) {pv(a) goto _restart;}
 
+ll cache[201][201][201];
+
+ll dp(vl &R, vl &G, vl &B, ll r, ll g, ll b){
+  // base case
+  if ((r == R.size() and g == G.size()) or
+      (r == R.size() and b == B.size()) or
+      (b == B.size() and g == G.size())) return 0;
+
+  // check cache
+  if (cache[r][g][b] != -1){
+    return cache[r][g][b];
+  }
+
+  ll res = 0;
+  ll p1 = 0, p2 = 0, p3 = 0;
+
+  // only try the pair if its possible
+  if (r < R.size() and g < G.size()){
+    p1 = dp(R, G, B, r + 1, g + 1, b) + (R[r] * G[g]);
+  }
+  if (r < R.size() and b < B.size()){
+    p2 = dp(R, G, B, r + 1, g, b + 1) + (R[r] * B[b]);
+  }
+  if (b < B.size() and g < G.size()){
+    p3 = dp(R, G, B, r, g + 1, b + 1) + (B[b] * G[g]);
+  }
+
+  // res is the best outcome
+  res = max(res, p1);
+  res = max(res, p2);
+  res = max(res, p3);
+ 
+  // store res
+  cache[r][g][b] = res;
+  return res;
+}
+
 int main(){
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
-  TC {
+  memset(cache, -1, sizeof(cache));
+
+  ll Rsticks; cin >> Rsticks;
+  ll Gsticks; cin >> Gsticks;
+  ll Bsticks; cin >> Bsticks;
+  vl R, G, B;
+  ll val;
+  for (int i = 0; i < Rsticks; i++){
+    cin >> val;
+    R.pb(val);
   }
+  for (int i = 0; i < Gsticks; i++){
+    cin >> val;
+    G.pb(val);
+  }
+  for (int i = 0; i < Bsticks; i++){
+    cin >> val;
+    B.pb(val);
+  }
+ 
+  sort(R.rbegin(), R.rend());
+  sort(G.rbegin(), G.rend());
+  sort(B.rbegin(), B.rend());
+
+  pv(R);
+  pv(G);
+  pv(B);
+
+  cout << dp(R, G, B, 0, 0, 0) << endl;
 }
