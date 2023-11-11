@@ -31,7 +31,9 @@ map<ll, vl> adjList;
 map<ll, ll> cache;
 
 ll dp(int idx, vector<ll> &costs){
-  cerr << "dp at " << idx << endl;
+  if (cache.find(idx) != cache.end()){
+    return cache[idx];
+  }
   ll res = costs[idx];
   auto itr = adjList.find(idx);
   if (itr == adjList.end()){
@@ -45,6 +47,7 @@ ll dp(int idx, vector<ll> &costs){
     alt += dp(i, costs);
   } 
   res = min(res, alt);
+  cache[idx] = res;
   return res;
 }
 
@@ -65,22 +68,16 @@ int main(){
       vals[tmp  - 1] = 0;
     }
 
-    cerr << "costs:" << endl;
-    pv(vals);
-
-    string inp;
-    getline(cin, inp);
     for (int i = 0; i < pots; i++){
-      ll tmp;
-      getline(cin, inp);
-      istringstream ss(inp);
-      while ( ss >> tmp ){
-	if (tmp == 0) continue;
-	adjList[i].pb(tmp - 1);
+      ll n;
+      cin >> n;
+      for (int j = 0; j < n; j++){
+	ll tmp;
+	cin >> tmp;
+	adjList[i].push_back(tmp-1);
       }
     }
 
-    cerr << "read!" << endl;
     // solving
     for (auto p: adjList){
       vals[p.first] = dp(p.first, vals);
